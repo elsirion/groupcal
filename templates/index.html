@@ -1,0 +1,38 @@
+{%- let num_cols = cols.num_cols() -%}
+{%- let rows = cols.rows() -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Calendar</title>
+</head>
+<body>
+    <table>
+        <thead><tr>
+            <td>Date</td>
+            <td>Number of people</td>
+            {%- for _ in 0..num_cols -%}
+                <td></td>
+            {%- endfor -%}
+        </tr></thead>
+        {%- for row in rows -%}
+        <tr>
+            <td>{{ row.0 }}</td>
+            <td style="text-align: center">{{ row.1 }}</td>
+            {% for col in row.2 -%}
+            {%- match col -%}
+            {%- when Some with (entry) -%}
+            <td style="background-color: {{ entry.color }}">
+                {%- if entry.first -%}
+                {{ entry.event.title -}}
+                {%- endif -%}
+            </td>
+            {%- when None -%}
+            <td></td>
+            {%- endmatch -%}
+            {%- endfor -%}
+        </tr>
+        {% endfor -%}
+    </table>
+</body>
+</html>
